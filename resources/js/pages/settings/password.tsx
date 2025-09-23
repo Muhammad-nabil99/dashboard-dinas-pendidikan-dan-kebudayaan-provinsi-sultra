@@ -13,7 +13,7 @@ import { Label } from '@/components/ui/label';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Password settings',
+        title: 'Pengaturan Kata Sandi',
         href: '/settings/password',
     },
 ];
