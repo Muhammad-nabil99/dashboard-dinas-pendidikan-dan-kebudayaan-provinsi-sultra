@@ -1,4 +1,4 @@
-import { NavFooter } from '@/components/nav-footer';
+// import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
@@ -14,13 +14,13 @@ const mainNavItems: NavItem[] = [
         icon: LayoutGrid,
     },
     {
-        title: 'Berkas',
-        href: '/berkas',
+        title: 'Berita',
+        href: '/berita',
         icon: Folder,
     },
     {
-        title: 'Informasi',
-        href: '/informasi',
+        title: 'Laporan',
+        href: '/laporan',
         icon: BookOpen ,
     },
 ];
