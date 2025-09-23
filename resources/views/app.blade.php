@@ -30,7 +30,7 @@
             }
         </style>
 
-        <title inertia>{{ config('app.name', 'Dikbud') }}</title>
+        <title>{{ config('app.name') }}</title>
 
         {{-- <link rel="icon" href="/favicon.ico" sizes="any">
         <link rel="icon" href="/favicon.svg" type="image/svg+xml"> --}}
