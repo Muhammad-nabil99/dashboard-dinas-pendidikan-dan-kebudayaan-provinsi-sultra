@@ -50,7 +50,7 @@ export default function Password() {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Password settings" />
+            <Head title="Pengaturan Kata Sandi" />
 
             <SettingsLayout>
                 <div className="space-y-6">
