@@ -28,9 +28,30 @@ class ProdukHukumController extends Controller
         ProdukHukum::create($request->all());
         return redirect()->route('produk-hukum.index')->with('message', 'Produk hukum berhasil ditambahkan');
     }
+    public function edit(ProdukHukum $produkHukum) {
+        return Inertia::render('produk-hukum/edit', compact('produkHukum'));
+    }
+
+    public function update(Request $request, ProdukHukum $produkHukum) {
+        $request->validate([
+            'judul' => 'required|string|max:255', 
+            'deskripsi' => 'required|string|max:255', 
+            'file' => 'required|string|max:255', 
+        ]);
+
+        $produkHukum->update([
+            'judul' => $request->input('judul'),
+            'deskripsi' => $request->input('deskripsi'),
+            'file' => $request->input('file'),
+        ]);
+
+        return redirect()->route('produk-hukum.index')->with('message', 'Produk hukum berhasil diedit');
+
+    }
 
     public function destroy(ProdukHukum $produkHukum) {
         $produkHukum->delete();
         return redirect()->route('produk-hukum.index')->with('message',' Produk hukum berhasil dihapus');
     }
+
 }
