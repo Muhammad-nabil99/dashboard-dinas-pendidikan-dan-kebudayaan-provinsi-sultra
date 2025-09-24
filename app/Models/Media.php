@@ -1,25 +1,20 @@
+
 <?php
-
 namespace App\Models;
-
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Str;
 
-class Galeri extends Model
+class Media extends Model
 {
     use HasFactory;
 
-    public $incrementing = false; // karena pakai UUID
+    public $incrementing = false;
     protected $keyType = 'string';
 
-    protected $fillable = [
-        'title', 'description', 'category', 'instansi',
-        'cover_image', 'media_count', 'date', 'location'
-    ];
+    protected $fillable = ['album_id', 'url'];
 
-    // 🔑 Auto-generate UUID saat create
     protected static function boot()
     {
         parent::boot();
@@ -31,8 +26,8 @@ class Galeri extends Model
         });
     }
 
-    public function media()
+    public function album()
     {
-        return $this->hasMany(Media::class);
+        return $this->belongsTo(Galeri::class);
     }
 }
