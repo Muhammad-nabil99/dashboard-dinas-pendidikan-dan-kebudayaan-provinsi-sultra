@@ -13,7 +13,7 @@ class Media extends Model
     public $incrementing = false;
     protected $keyType = 'string';
 
-    protected $fillable = ['album_id', 'url'];
+    protected $fillable = ['galeri_id', 'url'];
 
     protected static function boot()
     {

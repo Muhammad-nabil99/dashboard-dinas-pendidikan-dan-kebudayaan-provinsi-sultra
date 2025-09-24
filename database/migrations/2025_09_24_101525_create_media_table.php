@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('media', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('album_id')->constrained('albums')->onDelete('cascade');
+            $table->foreignUuid('galeri_id')->constrained('galeri')->onDelete('cascade');
             $table->string('url');
             $table->timestamps();
         });
