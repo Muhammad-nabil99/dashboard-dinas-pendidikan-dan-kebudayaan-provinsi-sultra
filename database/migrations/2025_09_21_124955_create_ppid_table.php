@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('galeris', function (Blueprint $table) {
+        Schema::create('ppid', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
         });
@@ -22,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('galeris');
+        Schema::dropIfExists('p_p_i_d_s');
     }
 };
