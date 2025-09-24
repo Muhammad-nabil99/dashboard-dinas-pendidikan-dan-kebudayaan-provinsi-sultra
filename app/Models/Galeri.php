@@ -9,30 +9,5 @@ use Illuminate\Support\Str;
 
 class Galeri extends Model
 {
-    use HasFactory;
-
-    public $incrementing = false; // karena pakai UUID
-    protected $keyType = 'string';
-
-    protected $fillable = [
-        'title', 'description', 'category', 'instansi',
-        'cover_image', 'media_count', 'date', 'location'
-    ];
-
-    // 🔑 Auto-generate UUID saat create
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::creating(function ($model) {
-            if (empty($model->id)) {
-                $model->id = (string) Str::uuid();
-            }
-        });
-    }
-
-    public function media()
-    {
-        return $this->hasMany(Media::class);
-    }
+    
 }

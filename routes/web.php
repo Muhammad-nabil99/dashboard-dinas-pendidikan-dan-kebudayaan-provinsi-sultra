@@ -16,13 +16,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // produk hukum
     Route::get('/produk-hukum', [ProdukHukumController::class, 'index'])->name('produk-hukum.index');
+    Route::post('/produk-hukum', [ProdukHukumController::class, 'store'])->name('produk-hukum.store');
     Route::get('/produk-hukum/create', [ProdukHukumController::class, 'create'])->name('produk-hukum.create');
-    
-    //galeri
-    Route::get('/galeri', [GaleriController::class, 'index'])->name('galeri.index');
-    Route::get('/galeri', [GaleriController::class, 'create'])->name('galeri.create');
-    Route::post('/albums', [GaleriController::class, 'store']);
-    Route::resource('galeri', GaleriController::class);
 });
 
 require __DIR__.'/settings.php';
