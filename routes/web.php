@@ -16,6 +16,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // produk hukum
     Route::get('/produk-hukum', [ProdukHukumController::class, 'index'])->name('produk-hukum.index');
     Route::get('/produk-hukum/create', [ProdukHukumController::class, 'create'])->name('produk-hukum.create');
+    Route::post('/produk-hukum', [ProdukHukumController::class, 'store'])->name('produk-hukum.store');
+    Route::delete('/produk-hukum/{produkHukum}', [ProdukHukumController::class, 'destroy'])->name('produk-hukum.destroy');
 });
 
 require __DIR__.'/settings.php';
