@@ -71,7 +71,7 @@ export default function Index() {
                             <Scale/>
                             {produk_hukum.judul}
                         </h2>
-                            <p className="text-gray-600">{produk_hukum.deskripsi}</p>
+                        <p className="text-gray-600">{produk_hukum.deskripsi}</p>
                         <p className="text-gray-500 text-sm flex items-center gap-2">
                             <CalendarDays/>
                             {new Date(produk_hukum.created_at).toLocaleDateString("id-ID", {
