@@ -4,8 +4,13 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
-      public function up(): void
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+<<<<<<< HEAD:database/migrations/2025_09_21_124942_create_galeris_table.php
 {
     Schema::create('galeri', function (Blueprint $table) {
         $table->uuid('id')->primary();
@@ -21,9 +26,17 @@ return new class extends Migration {
     });
     }
 
-        public function down(): void
-        {
-            Schema::dropIfExists('galeri'); // <-- perbaikan
-        }
+public function down(): void
+{
+    Schema::dropIfExists('albums'); // <-- perbaikan
+}
+=======
+    {
+        Schema::create('galeri', function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
+        });
+    }
+>>>>>>> d709e03b648daaae9dcc0ac2592f5002a592d37d:database/migrations/2025_09_21_124942_create_galeri_table.php
 
-    };
+};
