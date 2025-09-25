@@ -139,7 +139,7 @@ export default function Edit({ produkHukum }: Props) {
                             <iframe
                                 src={filePreview || `/storage/${produkHukum.file}`}
                                 width="100%"
-                                height="600px"
+                                height="500px"
                                 className="border rounded"
                             ></iframe>
                         </div>

@@ -102,7 +102,7 @@ export default function Index() {
                                 src={previewUrl}
                                 width="100%"
                                 height="400px"
-                                className="md:h-[600px]"
+                                className="md:h-[500px]"
                                 title="PDF Preview"
                             />
                         </div>
