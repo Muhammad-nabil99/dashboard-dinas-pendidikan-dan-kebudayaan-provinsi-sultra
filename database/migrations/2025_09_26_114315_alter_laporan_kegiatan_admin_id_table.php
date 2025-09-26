@@ -11,9 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ppdi', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        Schema::table('laporan_kegiatan', function (Blueprint $table) {
+            //
         });
     }
 
@@ -22,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('p_p_i_d_s');
+        Schema::table('laporan_kegiatan', function (Blueprint $table) {
+            //
+        });
     }
 };

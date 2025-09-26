@@ -1,10 +1,9 @@
-// import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { BookOpen,Brain,FileText, Folder, LayoutGrid, LayoutPanelTop, Newspaper, Scale, UserPen } from 'lucide-react';
+import { BookOpen, Brain, FileText, Folder, LayoutGrid, LayoutPanelTop, MessagesSquare, Newspaper, Scale, UserPen } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -12,6 +11,11 @@ const mainNavItems: NavItem[] = [
         title: 'Dashboard',
         href: '/dashboard',
         icon: LayoutGrid,
+    },
+    {
+        title: 'Layanan',
+        href: '/layanan',
+        icon: MessagesSquare,
     },
     {
         title: 'Profil',
@@ -25,28 +29,18 @@ const mainNavItems: NavItem[] = [
     },
     {
         title: 'Laporan Kegiatan',
-        href: '/laporan',
-        icon: BookOpen ,
+        href: '/laporan-kegiatan',
+        icon: BookOpen,
     },
     {
         title: 'PPID',
         href: '/ppid',
-        icon: FileText ,
+        icon: FileText,
     },
     {
         title: 'Inovasi',
         href: '/inovasi',
-        icon: Brain ,
-    },
-    {
-        title: 'Galeri',
-        href: '/galeri',
-        icon: Folder ,
-    },
-    {
-        title: 'Struktur Organisasi',
-        href: '/struktur-organisasi',
-        icon: LayoutPanelTop,
+        icon: Brain,
     },
     {
         title: 'Produk Hukum',
@@ -54,7 +48,6 @@ const mainNavItems: NavItem[] = [
         icon: Scale,
     },
 ];
-
 
 export function AppSidebar() {
     return (

@@ -84,7 +84,7 @@ export default function Index() {
                         </div>
 
                         <div className="flex items-center gap-3 mt-4 md:mt-0">
-                            <Button className='bg-blue-900 hover:bg-blue-800'>Lihat Detail</Button>
+                            <Button className='bg-blue-900 hover:bg-blue-800' >Lihat Detail</Button>
                             <Button disabled={processing} onClick={()=> handleDelete(produk_hukum.id, produk_hukum.judul)} className='bg-red-600 hover:bg-red-500'>Hapus</Button>
                         </div>
                     </div>

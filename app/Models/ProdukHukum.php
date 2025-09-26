@@ -9,6 +9,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class ProdukHukum extends Model
 {
     use HasFactory, Notifiable;
+    
+    protected $table = 'produk_hukum';
+    
     protected $fillable = [
         'judul',
         'deskripsi',
