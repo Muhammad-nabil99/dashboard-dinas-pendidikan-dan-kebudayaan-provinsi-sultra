@@ -6,5 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Berita extends Model
 {
-    protected $table = 'berita';
+    protected $fillable = [
+        'galeri_id',
+        'judul',
+        'deskripsi',
+        'file',
+        'cover_image',
+        'category',
+        'instansi',
+        'lokasi',
+        'tabel',
+    ];
 }

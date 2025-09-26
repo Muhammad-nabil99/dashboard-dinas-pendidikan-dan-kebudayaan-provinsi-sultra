@@ -23,20 +23,20 @@ class ProdukHukumController extends Controller
         $request->validate([
             'judul' => 'required|string|max:255', 
             'deskripsi' => 'required|string|max:255', 
-            'file' => 'nullable|file|mimes:pdf|max:255', 
+            'dokumen' => 'nullable|mimes:pdf|max:2000',
         ]);
 
         $path = null;
-        if ($request->hasFile('file')) {
+        if ($request->hasFile('dokumen')) {
             // Simpan file ke storage/app/public/produk-hukum
-            $path = $request->file('file')->store('produk-hukum', 'public');
+            $path = $request->file('dokumen')->store('produk-hukum', 'public');
         }
 
         // ProdukHukum::create($request->all());
         ProdukHukum::create([
             'judul' => $request->judul,
             'deskripsi' => $request->deskripsi,
-            'file' => $path, // simpan path ke DB
+            'dokumen' => $path, // simpan path ke DB
         ]);
         
         return redirect()->route('produk-hukum.index')->with('message', 'Produk hukum berhasil ditambahkan');
@@ -63,36 +63,36 @@ class ProdukHukumController extends Controller
     // }
 
     public function update(Request $request, $id)
-{
-    $request->validate([
-        'judul' => 'required|string|max:255',
-        'deskripsi' => 'required|string',
-        'file' => 'nullable|mimes:pdf|max:20480', // maksimal 20MB
-    ]);
+    {
+        $request->validate([
+            'judul' => 'required|string|max:255',
+            'deskripsi' => 'required|string',
+            'dokumen' => 'nullable|mimes:pdf|max:2000', // maksimal 20MB
+        ]);
 
-    $produkHukum = ProdukHukum::findOrFail($id);
+        $produkHukum = ProdukHukum::findOrFail($id);
 
-    // update field biasa
-    $produkHukum->judul = $request->judul;
-    $produkHukum->deskripsi = $request->deskripsi;
+        // update field biasa
+        $produkHukum->judul = $request->judul;
+        $produkHukum->deskripsi = $request->deskripsi;
 
-    // jika ada file baru
-    if ($request->hasFile('file')) {
-        // hapus file lama kalau ada
-        if ($produkHukum->file && Storage::disk('public')->exists($produkHukum->file)) {
-            Storage::disk('public')->delete($produkHukum->file);
+        // jika ada file baru
+        if ($request->hasFile('dokumen')) {
+            // hapus file lama kalau ada
+            if ($produkHukum->dokumen && Storage::disk('public')->exists($produkHukum->dokumen)) {
+                Storage::disk('public')->delete($produkHukum->dokumen);
+            }
+
+            // simpan file baru
+            $path = $request->file('dokumen')->store('produk-hukum', 'public');
+            $produkHukum->dokumen = $path;
         }
 
-        // simpan file baru
-        $path = $request->file('file')->store('produk-hukum', 'public');
-        $produkHukum->file = $path;
+
+        $produkHukum->save();
+
+        return redirect()->route('produk-hukum.index')->with('success', 'Produk hukum berhasil diperbarui.');
     }
-
-
-    $produkHukum->save();
-
-    return redirect()->route('produk-hukum.index')->with('success', 'Produk hukum berhasil diperbarui.');
-}
 
 
     public function destroy(ProdukHukum $produkHukum) {

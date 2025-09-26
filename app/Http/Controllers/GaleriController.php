@@ -1,14 +1,14 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\Galeri;
 
-use Illuminate\Http\Request;
 use Inertia\Inertia;
+use App\Models\Galeri;
+use Illuminate\Http\Request;
 
 class GaleriController extends Controller
 {
-    //menampilkan media
+        //menampilkan media
     public function index() {
         return Inertia::render("galeri/index", []);
     }
@@ -53,7 +53,4 @@ class GaleriController extends Controller
             'album' => $album->load('media')
         ], 201);
     }
-
-
-    
 }

@@ -4,7 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class PPID extends Model
+class Ppid extends Model
 {
-    protected $table = 'ppid';
+    protected $fillable = [
+        'galeri_id',
+        'judul',
+        'deskripsi',
+        'dokumen',
+        'file',
+        'cover_image',
+        'category',
+        'instansi',
+        'lokasi',
+        'tabel',
+    ];
 }

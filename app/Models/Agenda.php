@@ -6,5 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Agenda extends Model
 {
-    protected $table = 'agenda';
+    protected $fillable = [
+        'galeri_id',
+        'judul',
+        'deskripsi',
+        'file',
+        'cover_image',
+        'category',
+        'instansi',
+        'lokasi',
+        'tabel',
+    ];
 }

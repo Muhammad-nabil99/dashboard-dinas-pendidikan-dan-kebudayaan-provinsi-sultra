@@ -6,5 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Pengumuman extends Model
 {
-    protected $table = 'pengumuman';
+    protected $fillable = [
+        'galeri_id',
+        'judul',
+        'deskripsi',
+        'file',
+        'cover_image',
+        'category',
+        'instansi',
+        'lokasi',
+        'tabel',
+    ];
 }

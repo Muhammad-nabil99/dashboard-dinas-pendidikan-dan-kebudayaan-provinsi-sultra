@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class PPIDController extends Controller
+class PpidController extends Controller
 {
     //
 }

@@ -18,7 +18,7 @@ interface ProdukHukum {
     id:number,
     judul:string,
     deskripsi:string,
-    file:string,
+    dokumen:string,
     created_at:string,
 }
 

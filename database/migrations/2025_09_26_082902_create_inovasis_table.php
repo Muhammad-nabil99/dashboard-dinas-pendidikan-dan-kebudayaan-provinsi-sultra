@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('inovasi', function (Blueprint $table) {
+        Schema::create('inovasis', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
         });

@@ -20,7 +20,7 @@ interface ProdukHukum {
     id: number;
     judul: string;
     deskripsi: string;
-    file: string;
+    dokumen: string;
     created_at: string;
 }
 
@@ -32,11 +32,11 @@ export default function Edit({ produkHukum }: Props) {
     const { data, setData, post, errors, progress } = useForm<{
         judul: string;
         deskripsi: string;
-        file?: File | null;
+        dokumen?: File | null;
     }>({
         judul: produkHukum.judul || '',
         deskripsi: produkHukum.deskripsi || '',
-        file: undefined,
+        dokumen: undefined,
     });
 
     const [filePreview, setFilePreview] = useState<string | null>(null);
@@ -105,14 +105,14 @@ export default function Edit({ produkHukum }: Props) {
                         </div>
 
                         <div>
-                            <Label htmlFor="file">File</Label>
+                            <Label htmlFor="file">Dokumen</Label>
                             <Input
                                 type="file"
                                 accept="application/pdf"
                                 onChange={(e) => {
                                     if (e.target.files && e.target.files[0]) {
                                         const file = e.target.files[0];
-                                        setData("file", file);
+                                        setData("dokumen", file);
                                         setFilePreview(URL.createObjectURL(file));
                                     }
                                 }}
@@ -133,11 +133,11 @@ export default function Edit({ produkHukum }: Props) {
 
                 {/* Preview Kanan */}
                 <div className="w-full md:w-1/2">
-                    {(filePreview || produkHukum.file) && (
+                    {(filePreview || produkHukum.dokumen) && (
                         <div>
                             <p className="text-sm text-gray-500 mb-2">Preview File:</p>
                             <iframe
-                                src={filePreview || `/storage/${produkHukum.file}`}
+                                src={filePreview || `/storage/${produkHukum.dokumen}`}
                                 width="100%"
                                 height="500px"
                                 className="border rounded"

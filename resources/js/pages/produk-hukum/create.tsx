@@ -20,7 +20,7 @@ export default function Index() {
     const { data, setData, post, errors } = useForm({
         judul: '', 
         deskripsi: '', 
-        file: null as File | null,
+        dokumen: null as File | null,
     });
 
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -35,7 +35,7 @@ export default function Index() {
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
-            setData('file', file);
+            setData('dokumen', file);
             setPreviewUrl(URL.createObjectURL(file));
         }
     };
@@ -80,7 +80,7 @@ export default function Index() {
                         </div>
 
                         <div>
-                            <Label htmlFor="file">File</Label>
+                            <Label htmlFor="file">Dokumen</Label>
                             <Input
                                 type="file"
                                 accept="application/pdf"
@@ -108,13 +108,11 @@ export default function Index() {
                         </div>
                     ) : (
                         <div className="flex items-center justify-center h-[400px] md:h-[600px] border rounded text-gray-500">
-                            Belum ada file dipilih
+                            Belum ada dokumen dipilih
                         </div>
                     )}
                 </div>
             </div>
         </AppLayout>
-
         );
-
 }

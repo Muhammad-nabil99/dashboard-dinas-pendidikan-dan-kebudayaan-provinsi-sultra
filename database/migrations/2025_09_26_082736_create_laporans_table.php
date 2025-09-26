@@ -11,8 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ppid', function (Blueprint $table) {
+        Schema::create('laporans', function (Blueprint $table) {
             $table->id();
+            $table->string('judul');
+            $table->string('deskripsi');
+            $table->string('nomor_tracking');
+            $table->enum('status', ['proses','selesai']);
             $table->timestamps();
         });
     }
@@ -22,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('p_p_i_d_s');
+        Schema::dropIfExists('laporans');
     }
 };

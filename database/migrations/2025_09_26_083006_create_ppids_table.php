@@ -11,11 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('produk_hukum', function (Blueprint $table) {
+        Schema::create('ppids', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('galeris_id')->constrained('galeris')->onDelete('cascade');
             $table->string('judul');
+            $table->string('file');
+            $table->string('dokumen');
             $table->string('deskripsi');
-            $table->string('file')->nullable();
+            $table->string('cover_image');
+            $table->string('lokasi');
+            $table->string('tabel')->default('ppid');
             $table->timestamps();
         });
     }
@@ -25,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('produk_hukum');
+        Schema::dropIfExists('ppids');
     }
 };
