@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('laporans', function (Blueprint $table) {
             $table->id();
             $table->string('judul');
-            $table->string('deskripsi');
+            $table->text('deskripsi');
             $table->string('nomor_tracking');
             $table->enum('status', ['proses','selesai']);
             $table->timestamps();

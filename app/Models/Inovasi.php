@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Inovasi extends Model
 {
     protected $fillable = [
-        'galeri_id',
+        'medias_id',
         'judul',
         'deskripsi',
         'file',

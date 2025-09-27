@@ -7,14 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 class Berita extends Model
 {
     protected $fillable = [
-        'galeri_id',
+        'medias_id',
         'judul',
         'deskripsi',
-        'file',
         'cover_image',
         'category',
         'instansi',
         'lokasi',
         'tabel',
     ];
+
+    public function medias()
+    {
+        return $this->belongsTo(Media::class);
+    }
 }

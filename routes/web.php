@@ -28,6 +28,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/berita', [BeritaController::class, 'index'])->name('berita.index');
     Route::get('/berita/create', [BeritaController::class, 'create'])->name('berita.create');
     Route::post('/berita', [BeritaController::class, 'store'])->name('berita.store');
+    Route::get('/berita/{berita}/edit', [BeritaController::class, 'edit'])->name('berita.edit');
+
     
 });
 require __DIR__.'/settings.php';

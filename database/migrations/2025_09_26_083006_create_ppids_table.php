@@ -13,11 +13,10 @@ return new class extends Migration
     {
         Schema::create('ppids', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('galeris_id')->constrained('galeris')->onDelete('cascade');
+            $table->foreignId('medias_id')->constrained('medias')->onDelete('cascade');
             $table->string('judul');
-            $table->string('file');
             $table->string('dokumen');
-            $table->string('deskripsi');
+            $table->text('deskripsi');
             $table->string('cover_image');
             $table->string('lokasi');
             $table->string('tabel')->default('ppid');

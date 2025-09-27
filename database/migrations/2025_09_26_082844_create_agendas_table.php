@@ -13,10 +13,9 @@ return new class extends Migration
     {
         Schema::create('agendas', function (Blueprint $table) {
             $table->id(); 
-            $table->foreignId('galeris_id')->constrained('galeris')->onDelete('cascade');
+            $table->foreignId('medias_id')->constrained('medias')->onDelete('cascade');
             $table->string('judul');
-            $table->string('deskripsi');
-            $table->string('file');
+            $table->text('deskripsi');
             $table->string('cover_image');
             $table->string('lokasi');
             $table->string('tabel')->default('agenda');

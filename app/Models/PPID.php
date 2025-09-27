@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Ppid extends Model
 {
     protected $fillable = [
-        'galeri_id',
+        'medias_id',
         'judul',
         'deskripsi',
         'dokumen',

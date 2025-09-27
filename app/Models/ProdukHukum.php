@@ -7,8 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class ProdukHukum extends Model
 {
     protected $fillable = [
+        'dokumens_id',
         'judul',
         'deskripsi',
-        'dokumen',
     ];
+
+    public function dokumens()
+    {
+        return $this->belongsTo(Dokumen::class);
+    }
 }

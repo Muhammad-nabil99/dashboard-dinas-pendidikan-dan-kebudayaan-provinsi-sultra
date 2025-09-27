@@ -13,6 +13,14 @@ return new class extends Migration
     {
         Schema::create('inovasis', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('medias_id')->constrained('medias')->onDelete('cascade');
+            $table->string('judul');
+            $table->text('deskripsi');
+            $table->string('cover_image');
+            $table->string('lokasi');
+            $table->string('tabel')->default('inovasi');
+            $table->enum('category',['foto','video']);
+            $table->enum('instansi',['umum','sma','smk','slb']);
             $table->timestamps();
         });
     }

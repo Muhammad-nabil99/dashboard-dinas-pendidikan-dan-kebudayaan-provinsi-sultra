@@ -6,7 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Media extends Model
 {
+    protected $table = 'medias';
     protected $fillable = [
-        'url',
+        'file',
     ];
+
+    public function beritas()
+    {
+        return $this->hasMany(Berita::class);
+    }
 }
