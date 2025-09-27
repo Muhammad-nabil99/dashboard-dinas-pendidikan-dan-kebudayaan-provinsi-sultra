@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\GaleriController;
 use App\Http\Controllers\ProdukHukumController;
+use App\Models\Berita;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -21,6 +23,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/produk-hukum/{produkHukum}/edit', [ProdukHukumController::class, 'edit'])->name('produk-hukum.edit');
     Route::post('/produk-hukum/{produkHukum}', [ProdukHukumController::class, 'update'])->name('produk-hukum.update');
     Route::delete('/produk-hukum/{produkHukum}', [ProdukHukumController::class, 'destroy'])->name('produk-hukum.destroy');
+    
+    // Berita
+    Route::get('/berita', [BeritaController::class, 'index'])->name('berita.index');
+    Route::get('/berita/create', [BeritaController::class, 'create'])->name('berita.create');
+    Route::post('/berita', [BeritaController::class, 'store'])->name('berita.store');
+    
 });
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';
