@@ -10,6 +10,9 @@ class Media extends Model
     protected $fillable = [
         'file',
     ];
+    protected $casts = [
+        'file' => 'array',
+    ];
 
     public function beritas()
     {

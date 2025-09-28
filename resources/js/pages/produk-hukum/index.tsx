@@ -49,8 +49,9 @@ export default function Index() {
             <Head title="Produk Hukum" />
 
             {/* Tombol Tambah */}
-            <div className="m-4">
-                <Link href={route("produk-hukum.create")}>
+            <div className="m-4 flex justify-between items-center">
+                <h1 className="text-2xl font-semibold">Daftar Produk Hukum</h1>
+                <Link href={route('produk-hukum.create')}>
                     <Button>Tambah</Button>
                 </Link>
             </div>

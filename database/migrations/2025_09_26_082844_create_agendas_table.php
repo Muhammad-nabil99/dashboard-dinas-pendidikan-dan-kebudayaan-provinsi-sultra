@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('cover_image');
             $table->string('lokasi');
             $table->string('tabel')->default('agenda');
-            $table->enum('category',['foto','video']);
+            $table->enum('category',['foto','video'])->nullable();
             $table->enum('instansi',['umum','sma','smk','slb']);
             $table->timestamps();
         });

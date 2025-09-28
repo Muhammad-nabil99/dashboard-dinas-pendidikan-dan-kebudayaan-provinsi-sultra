@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use Inertia\Inertia;
 use App\Models\Media;
 use App\Models\Berita;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
+use Illuminate\Support\Facades\Storage;
 
 class BeritaController extends Controller
 {
     public function index()
     {
-        // ambil berita beserta relasi file (media)
         $berita = Berita::with('medias')->latest()->get();
         return Inertia::render("berita/index", compact("berita"));
     }
@@ -27,29 +27,53 @@ class BeritaController extends Controller
             'judul'       => 'required|string|max:255',
             'deskripsi'   => 'required|string',
             'cover_image' => 'required|image|mimes:jpg,jpeg,png|max:20048',
-            'file'        => 'required|image|mimes:jpg,jpeg,png|max:20048',
-            'category'    => 'required|in:foto,video',
+            'files.*'     => 'nullable|mimes:jpg,jpeg,png,mp4,mov,avi|max:50000',
+            'category'    => 'nullable|in:foto,video',
             'instansi'    => 'required|in:umum,sma,smk,slb',
             'lokasi'      => 'required|string|max:200',
+            'video_urls'  => 'nullable|array',
+            'video_urls.*'=> 'url',
         ]);
 
-        // Upload cover image → disimpan di tabel beritas
+        // cover image
         $coverPath = $request->file('cover_image')->store('berita/cover', 'public');
 
-        // Upload file → disimpan di tabel medias
-        $filePath = $request->file('file')->store('berita/file', 'public');
+        // simpan semua media ke array JSON
+        $mediaFiles = [];
 
-        // Simpan ke tabel medias
+        // upload file gambar/video lokal
+        if ($request->hasFile('files')) {
+            foreach ($request->file('files') as $file) {
+                $path = $file->store('berita/file', 'public');
+                $type = in_array($file->extension(), ['mp4','mov','avi']) ? 'video' : 'foto';
+                $mediaFiles[] = [
+                    'file' => $path,
+                    'type' => $type
+                ];
+            }
+        }
+
+        // simpan link video
+        if ($request->video_urls) {
+            foreach ($request->video_urls as $url) {
+                $mediaFiles[] = [
+                    'file' => $url,
+                    'type' => 'video'
+                ];
+            }
+        }
+
+        // buat media
         $media = Media::create([
-            'file' => $filePath,
+            'file' => $mediaFiles
         ]);
 
-        // Simpan ke tabel beritas
+        // buat berita
         Berita::create([
-            'medias_id'   => $media->id,   // relasi ke tabel medias
+            'medias_id'   => $media->id,
             'judul'       => $request->judul,
             'deskripsi'   => $request->deskripsi,
-            'cover_image' => $coverPath,   // simpan path hasil store()
+            'cover_image' => $coverPath,
             'category'    => $request->category,
             'instansi'    => $request->instansi,
             'lokasi'      => $request->lokasi,
@@ -63,7 +87,94 @@ class BeritaController extends Controller
     public function edit($id)
     {
         $berita = Berita::with('medias')->findOrFail($id);
-        
         return Inertia::render('berita/edit', compact('berita'));
     }
+
+    public function update(Request $request, Berita $berita)
+    {
+        $request->validate([
+            'judul'       => 'required|string|max:255',
+            'deskripsi'   => 'required|string',
+            'cover_image' => 'nullable|image|mimes:jpg,jpeg,png|max:20048',
+            'files.*'     => 'nullable|mimes:jpg,jpeg,png,mp4,mov,avi|max:50000',
+            'category'    => 'nullable|in:foto,video',
+            'instansi'    => 'required|in:umum,sma,smk,slb',
+            'lokasi'      => 'required|string|max:200',
+            'video_urls'  => 'nullable|array',
+            'video_urls.*'=> 'url',
+        ]);
+
+        // cover image update
+        if ($request->hasFile('cover_image')) {
+            $coverPath = $request->file('cover_image')->store('berita/cover', 'public');
+            $berita->cover_image = $coverPath;
+        }
+
+        // handle media
+        $mediaFiles = [];
+
+        if ($request->hasFile('files')) {
+            foreach ($request->file('files') as $file) {
+                $path = $file->store('berita/file', 'public');
+                $type = in_array($file->extension(), ['mp4','mov','avi']) ? 'video' : 'foto';
+                $mediaFiles[] = ['file' => $path, 'type' => $type];
+            }
+        }
+
+        if ($request->video_urls) {
+            foreach ($request->video_urls as $url) {
+                $mediaFiles[] = ['file' => $url, 'type' => 'video'];
+            }
+        }
+
+        // update media jika ada
+        if ($berita->medias) {
+            $berita->medias->update(['file' => $mediaFiles]);
+        }
+
+        // update berita
+        $berita->update([
+            'judul'       => $request->judul,
+            'deskripsi'   => $request->deskripsi,
+            'category'    => $request->category,
+            'instansi'    => $request->instansi,
+            'lokasi'      => $request->lokasi,
+        ]);
+
+        return redirect()->route('berita.index')
+            ->with('message', 'Berita berhasil diperbarui');
+    }
+
+    public function destroy($id)
+{
+    $berita = Berita::with('medias')->findOrFail($id);
+
+    // Hapus cover image di storage
+    if ($berita->cover_image && Storage::disk('public')->exists($berita->cover_image)) {
+        Storage::disk('public')->delete($berita->cover_image);
+    }
+
+    // Hapus semua file media
+    if ($berita->medias && is_array($berita->medias->file)) {
+        foreach ($berita->medias->file as $media) {
+            if (isset($media['file']) && !preg_match('/^https?:\/\//', $media['file'])) {
+                // hanya hapus file lokal
+                if (Storage::disk('public')->exists($media['file'])) {
+                    Storage::disk('public')->delete($media['file']);
+                }
+            }
+        }
+
+        // Hapus record medias
+        $berita->medias->delete();
+    }
+
+    // Hapus record berita
+    $berita->delete();
+
+    return redirect()->route('berita.index')
+        ->with('message', 'Berita berhasil dihapus beserta media terkait');
 }
+
+}
+

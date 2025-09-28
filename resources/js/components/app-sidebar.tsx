@@ -4,7 +4,7 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { BookOpen,Brain,FileText, Folder, LayoutGrid, LayoutPanelTop, Newspaper, Scale, UserPen } from 'lucide-react';
+import { BookOpen,Brain,FileText, LayoutGrid, Newspaper, Scale } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -12,11 +12,6 @@ const mainNavItems: NavItem[] = [
         title: 'Dashboard',
         href: '/dashboard',
         icon: LayoutGrid,
-    },
-    {
-        title: 'Profil',
-        href: '/profil',
-        icon: UserPen,
     },
     {
         title: 'Berita',
@@ -37,16 +32,6 @@ const mainNavItems: NavItem[] = [
         title: 'Inovasi',
         href: '/inovasi',
         icon: Brain ,
-    },
-    {
-        title: 'Galeri',
-        href: '/galeri',
-        icon: Folder ,
-    },
-    {
-        title: 'Struktur Organisasi',
-        href: '/struktur-organisasi',
-        icon: LayoutPanelTop,
     },
     {
         title: 'Produk Hukum',
