@@ -3,7 +3,7 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { BookOpen, Brain, FileText, Folder, LayoutGrid, LayoutPanelTop, MessagesSquare, Newspaper, Scale, UserPen } from 'lucide-react';
+import { CalendarDays,BookOpen, Brain, FileText, Folder, LayoutGrid, LayoutPanelTop, MessagesSquare, Newspaper, Scale, UserPen } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -16,6 +16,11 @@ const mainNavItems: NavItem[] = [
         title: 'Layanan',
         href: '/layanan',
         icon: MessagesSquare,
+    },
+    {
+        title: 'Agenda',
+        href: '/agenda',
+        icon: CalendarDays,
     },
     {
         title: 'Profil',
