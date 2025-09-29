@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
-import { CalendarDays, Megaphone } from 'lucide-react';
+import { CalendarDays, Megaphone, Plus, SquarePen, Trash2 } from 'lucide-react';
 import { PageProps as InertiaPageProps } from '@inertiajs/core';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -67,7 +67,9 @@ export default function Index() {
             <div className="m-4 flex justify-between items-center">
                 <h1 className="text-2xl font-semibold">Daftar Berita</h1>
                 <Link href={route('berita.create')}>
-                    <Button>Tambah</Button>
+                    <Button>
+                        <Plus /> Tambah
+                    </Button>
                 </Link>
             </div>
 
@@ -121,7 +123,7 @@ export default function Index() {
                                     <div className="mt-auto flex gap-2">
                                         <Link href={route("berita.edit", item.id)} className="flex-1">
                                             <Button className="bg-blue-950 hover:bg-blue-900 w-full">
-                                                Edit
+                                                <SquarePen /> Ubah
                                             </Button>
                                         </Link>
                                         <Button
@@ -129,7 +131,7 @@ export default function Index() {
                                             onClick={() => handleDelete(item.id, item.judul)}
                                             className="bg-red-600 hover:bg-red-500 flex-1"
                                         >
-                                            Hapus
+                                            <Trash2 /> Hapus
                                         </Button>
                                     </div>
                                 </div>

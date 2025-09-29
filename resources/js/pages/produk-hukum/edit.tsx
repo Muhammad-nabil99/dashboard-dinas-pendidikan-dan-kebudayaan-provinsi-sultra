@@ -6,21 +6,26 @@ import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, useForm } from '@inertiajs/react';
-import { CircleAlert } from 'lucide-react';
+import { CircleAlert, Save } from 'lucide-react';
 import { useState } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Edit Produk Hukum',
-        href: '/produk-hukum/edit',
+    { 
+        title: 'Edit Produk Hukum', 
+        href: '/produk-hukum/edit' 
     },
 ];
+
+interface Dokumen {
+    id: number;
+    dokumen: string;
+}
 
 interface ProdukHukum {
     id: number;
     judul: string;
     deskripsi: string;
-    dokumen: string;
+    dokumens: Dokumen | null;
     created_at: string;
 }
 
@@ -33,6 +38,7 @@ export default function Edit({ produkHukum }: Props) {
         judul: string;
         deskripsi: string;
         dokumen?: File | null;
+        _method?: string;
     }>({
         judul: produkHukum.judul || '',
         deskripsi: produkHukum.deskripsi || '',
@@ -43,19 +49,16 @@ export default function Edit({ produkHukum }: Props) {
 
     const handleUpdate = (e: React.FormEvent) => {
         e.preventDefault();
-        setData(prev => ({
-            ...prev,
-            _method: 'PUT',
-        }));
+        setData(prev => ({ ...prev, _method: 'PUT' }));
 
         post(route('produk-hukum.update', produkHukum.id), {
             forceFormData: true,
-            onError: (errors) => {
-                console.error("Validation errors:", errors);
-            },
+            onError: (errors) => console.error("Validation errors:", errors),
         });
     };
 
+    // dokumen lama
+    const existingDoc = produkHukum.dokumens?.dokumen || null;
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -126,22 +129,33 @@ export default function Edit({ produkHukum }: Props) {
                         )}
 
                         <Button type="submit" className="w-full md:w-auto">
-                            Edit
+                            <Save /> Simpan
                         </Button>
                     </form>
                 </div>
 
                 {/* Preview Kanan */}
                 <div className="w-full md:w-1/2">
-                    {(filePreview || produkHukum.dokumen) && (
+                    {(filePreview || existingDoc) ? (
                         <div>
-                            <p className="text-sm text-gray-500 mb-2">Preview File:</p>
+                            <p className="text-sm text-gray-500 mb-2">Preview Dokumen:</p>
                             <iframe
-                                src={filePreview || `/storage/${produkHukum.dokumen}`}
+                                src={
+                                    filePreview
+                                        ? filePreview
+                                        : existingDoc?.startsWith('http')
+                                            ? existingDoc
+                                            : `/storage/${existingDoc}`
+                                }
                                 width="100%"
                                 height="500px"
                                 className="border rounded"
-                            ></iframe>
+                                title="Preview Dokumen"
+                            />
+                        </div>
+                    ) : (
+                        <div className="flex items-center justify-center h-[500px] border rounded text-gray-500">
+                            Belum ada dokumen tersedia
                         </div>
                     )}
                 </div>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Inertia\Inertia;
+use App\Models\Dokumen;
 use App\Models\ProdukHukum;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -19,29 +20,40 @@ class ProdukHukumController extends Controller
     }
 
     public function store(Request $request) {
-        // dd($request);
-        $request->validate([
-            'judul' => 'required|string|max:255', 
-            'deskripsi' => 'required|string|max:255', 
-            'dokumen' => 'nullable|mimes:pdf|max:2000',
+    $request->validate([
+        'judul' => 'required|string|max:255', 
+        'deskripsi' => 'required|string|max:255', 
+        'dokumen' => 'nullable|mimes:pdf|max:2000',
+    ]);
+
+    $dokumenId = null;
+
+    if ($request->hasFile('dokumen')) {
+        // Simpan file ke storage/app/public/produk-hukum
+        $path = $request->file('dokumen')->store('produk-hukum', 'public');
+
+        // Simpan ke tabel dokumens
+        $dokumen = Dokumen::create([
+            'dokumen' => $path,
         ]);
 
-        $path = null;
-        if ($request->hasFile('dokumen')) {
-            // Simpan file ke storage/app/public/produk-hukum
-            $path = $request->file('dokumen')->store('produk-hukum', 'public');
-        }
-
-        // ProdukHukum::create($request->all());
-        ProdukHukum::create([
-            'judul' => $request->judul,
-            'deskripsi' => $request->deskripsi,
-            'dokumen' => $path, // simpan path ke DB
-        ]);
-        
-        return redirect()->route('produk-hukum.index')->with('message', 'Produk hukum berhasil ditambahkan');
+        $dokumenId = $dokumen->id;
     }
-    public function edit(ProdukHukum $produkHukum) {
+
+    // Simpan ke produk_hukums dengan foreign key dokumens_id
+    ProdukHukum::create([
+        'judul' => $request->judul,
+        'deskripsi' => $request->deskripsi,
+        'dokumens_id' => $dokumenId,
+    ]);
+
+    return redirect()->route('produk-hukum.index')
+        ->with('message', 'Produk hukum berhasil ditambahkan');
+}
+
+    public function edit($id) {
+        $produkHukum = ProdukHukum::with('dokumens')->findOrFail($id);
+        
         return Inertia::render('produk-hukum/edit', compact('produkHukum'));
     }
 
@@ -67,7 +79,7 @@ class ProdukHukumController extends Controller
         $request->validate([
             'judul' => 'required|string|max:255',
             'deskripsi' => 'required|string',
-            'dokumen' => 'nullable|mimes:pdf|max:2000', // maksimal 20MB
+            'dokumen' => 'nullable|mimes:pdf|max:20000', // maksimal 20MB
         ]);
 
         $produkHukum = ProdukHukum::findOrFail($id);
@@ -75,27 +87,40 @@ class ProdukHukumController extends Controller
         // update field biasa
         $produkHukum->judul = $request->judul;
         $produkHukum->deskripsi = $request->deskripsi;
+        $produkHukum->save();
 
-        // jika ada file baru
+        // ambil dokumen lama (kalau ada)
+        $dokumen = $produkHukum->dokumens()->first();
+
         if ($request->hasFile('dokumen')) {
-            // hapus file lama kalau ada
-            if ($produkHukum->dokumen && Storage::disk('public')->exists($produkHukum->dokumen)) {
-                Storage::disk('public')->delete($produkHukum->dokumen);
+            // hapus file lama dari storage
+            if ($dokumen && Storage::disk('public')->exists($dokumen->dokumen)) {
+                Storage::disk('public')->delete($dokumen->dokumen);
             }
 
             // simpan file baru
             $path = $request->file('dokumen')->store('produk-hukum', 'public');
-            $produkHukum->dokumen = $path;
+
+            if ($dokumen) {
+                // update record lama
+                $dokumen->update([
+                    'dokumen' => $path,
+                ]);
+            } else {
+                // bikin record baru
+                $produkHukum->dokumens()->create([
+                    'dokumen' => $path,
+                ]);
+            }
         }
-
-
-        $produkHukum->save();
 
         return redirect()->route('produk-hukum.index')->with('success', 'Produk hukum berhasil diperbarui.');
     }
 
 
-    public function destroy(ProdukHukum $produkHukum) {
+
+    public function destroy(ProdukHukum $produkHukum) 
+    {
         $produkHukum->delete();
         return redirect()->route('produk-hukum.index')->with('message',' Produk hukum berhasil dihapus');
     }

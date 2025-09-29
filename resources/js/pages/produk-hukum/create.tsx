@@ -6,7 +6,7 @@ import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, useForm } from '@inertiajs/react';
-import { CircleAlert } from 'lucide-react';
+import { CircleAlert, Save } from 'lucide-react';
 import { useState } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -89,7 +89,7 @@ export default function Index() {
                         </div>
 
                         <Button type="submit" className="w-full md:w-auto">
-                            Tambah
+                            <Save /> Simpan
                         </Button>
                     </form>
                 </div>

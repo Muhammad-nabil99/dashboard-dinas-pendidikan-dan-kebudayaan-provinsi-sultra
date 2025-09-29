@@ -14,6 +14,6 @@ class ProdukHukum extends Model
 
     public function dokumens()
     {
-        return $this->belongsTo(Dokumen::class);
+        return $this->belongsTo(Dokumen::class, "dokumens_id");
     }
 }

@@ -13,6 +13,6 @@ class Dokumen extends Model
 
     public function produk_hukums()
     {
-        return $this->hasMany(ProdukHukum::class);
+        return $this->hasMany(ProdukHukum::class, "dokumens_id");
     }
 }

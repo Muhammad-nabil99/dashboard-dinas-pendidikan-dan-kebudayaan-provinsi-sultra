@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, useForm } from '@inertiajs/react';
-import { CalendarDays, Megaphone, Scale } from 'lucide-react';
+import { CalendarDays, Megaphone, Plus, Scale, SquarePen, Trash2 } from 'lucide-react';
 import { usePage } from '@inertiajs/react';
 import { PageProps as InertiaPageProps } from '@inertiajs/core'
 
@@ -52,7 +52,9 @@ export default function Index() {
             <div className="m-4 flex justify-between items-center">
                 <h1 className="text-2xl font-semibold">Daftar Produk Hukum</h1>
                 <Link href={route('produk-hukum.create')}>
-                    <Button>Tambah</Button>
+                    <Button>
+                        <Plus /> Tambah
+                    </Button>
                 </Link>
             </div>
 
@@ -95,8 +97,8 @@ export default function Index() {
                             {/* Aksi */}
                             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
                                 <Link href={route("produk-hukum.edit", produk.id)}>
-                                    <Button className="bg-blue-900 hover:bg-blue-800 w-full sm:w-auto">
-                                        Ubah
+                                    <Button className="bg-blue-950 hover:bg-blue-900 w-full sm:w-auto">
+                                        <SquarePen /> Ubah
                                     </Button>
                                 </Link>
                                 <Button
@@ -104,7 +106,7 @@ export default function Index() {
                                     onClick={() => handleDelete(produk.id, produk.judul)}
                                     className="bg-red-600 hover:bg-red-500 w-full sm:w-auto"
                                 >
-                                    Hapus
+                                    <Trash2 /> Hapus
                                 </Button>
                             </div>
                         </div>
