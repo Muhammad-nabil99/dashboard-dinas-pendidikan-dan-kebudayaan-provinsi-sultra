@@ -102,6 +102,7 @@ export default function Edit({ berita }: Props) {
         setPreviewFileUrls(newPreview);
         }
     };
+    
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>

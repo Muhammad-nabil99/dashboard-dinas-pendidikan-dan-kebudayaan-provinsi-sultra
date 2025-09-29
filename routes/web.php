@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\BeritaController;
-use App\Http\Controllers\GaleriController;
+use App\Http\Controllers\InovasiController;
 use App\Http\Controllers\ProdukHukumController;
 use App\Models\Berita;
 use Illuminate\Support\Facades\Route;
@@ -31,6 +31,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/berita/{berita}/edit', [BeritaController::class, 'edit'])->name('berita.edit');
     Route::put('/berita/{berita}', [BeritaController::class, 'update'])->name('berita.update');
     Route::delete('/berita/{berita}', [BeritaController::class, 'destroy'])->name('berita.destroy');
+
+    Route::resource('inovasi', InovasiController::class);
 });
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';
