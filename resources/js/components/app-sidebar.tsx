@@ -3,7 +3,7 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { CalendarDays,BookOpen, Brain, FileText, Folder, LayoutGrid, LayoutPanelTop, MessagesSquare, Newspaper, Scale, UserPen } from 'lucide-react';
+import {Megaphone, CalendarDays,BookOpen, Brain, FileText, Folder, LayoutGrid, LayoutPanelTop, MessagesSquare, Newspaper, Scale, UserPen } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -23,14 +23,14 @@ const mainNavItems: NavItem[] = [
         icon: CalendarDays,
     },
     {
-        title: 'Profil',
-        href: '/profil',
-        icon: UserPen,
-    },
-    {
         title: 'Berita',
         href: '/berita',
         icon: Newspaper,
+    },
+    {
+        title: 'Pengumuman',
+        href: '/pengumuman',
+        icon: Megaphone,
     },
     {
         title: 'Laporan Kegiatan',
