@@ -11,9 +11,8 @@ import {
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, router, useForm, usePage } from '@inertiajs/react';
-import { CalendarDays, Megaphone, Scale } from 'lucide-react';
+import { CalendarDays, FileText, ListFilterPlus, Megaphone } from 'lucide-react';
 import { useMemo, useState } from 'react';
-
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Laporan Kegiatan',
@@ -70,26 +69,31 @@ export default function Index() {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Laporan Kegiatan" />
-            <div className="m-4">
-                <Link href={route('laporan-kegiatan.create')}>
-                    <Button>Tambah</Button>
-                </Link>
-            </div>
-            <div className="m-4">
-                <DropdownMenu>
-                    {/* The asChild prop ensures the Button component is the trigger, not a wrapping div */}
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="outline">filter</Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent className="w-56">
-                        <DropdownMenuSeparator />
-                        <DropdownMenuGroup className="capitalize">
-                            <DropdownMenuItem onClick={() => setSortOrder('terbaru')}>terbaru</DropdownMenuItem>
-                            <DropdownMenuItem onClick={() => setSortOrder('terlama')}>terlama</DropdownMenuItem>
-                        </DropdownMenuGroup>
-                        <DropdownMenuSeparator />
-                    </DropdownMenuContent>
-                </DropdownMenu>
+            <div className="m-4 flex items-center justify-between capitalize">
+                <h1 className="text-2xl font-semibold">laporan kegiatan</h1>
+                <div className="flex items-center">
+                    <Link href={route('laporan-kegiatan.create')}>
+                        <Button>Tambah</Button>
+                    </Link>
+                    <div className="m-4">
+                        <DropdownMenu>
+                            {/* The asChild prop ensures the Button component is the trigger, not a wrapping div */}
+                            <DropdownMenuTrigger asChild>
+                                <Button variant="outline">
+                                    <ListFilterPlus /> filter
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent className="w-56">
+                                <DropdownMenuSeparator />
+                                <DropdownMenuGroup className="capitalize">
+                                    <DropdownMenuItem onClick={() => setSortOrder('terbaru')}>terbaru</DropdownMenuItem>
+                                    <DropdownMenuItem onClick={() => setSortOrder('terlama')}>terlama</DropdownMenuItem>
+                                </DropdownMenuGroup>
+                                <DropdownMenuSeparator />
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                    </div>
+                </div>
             </div>
 
             <div className="w-1/2 px-4">
@@ -101,7 +105,7 @@ export default function Index() {
                     </Alert>
                 )}
             </div>
-            {laporan_kegiatan.length > 0 && (
+            {laporan_kegiatan.length > 0 ? (
                 <div className="m-4 space-y-4">
                     {sortedDocuments?.map((laporan_kegiatan) => (
                         <div
@@ -110,7 +114,7 @@ export default function Index() {
                         >
                             <div className="space-y-2">
                                 <h2 className="flex items-center gap-2 text-lg font-bold text-gray-800">
-                                    <Scale />
+                                    <FileText />
                                     {laporan_kegiatan.judul}
                                 </h2>
                                 <p className="text-gray-600">{laporan_kegiatan.deskripsi}</p>
@@ -155,6 +159,10 @@ export default function Index() {
                             </div>
                         </div>
                     ))}
+                </div>
+            ) : (
+                <div className="mt-10 text-center text-gray-500">
+                    <p className="mb-4 capitalize">Belum ada laporan kegiatan</p>
                 </div>
             )}
         </AppLayout>

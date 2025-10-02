@@ -24,7 +24,7 @@ class LaporanKegiatanController extends Controller
             'penyelenggara' => 'required|string|max:255',
             'lokasi' => 'required|string|max:255',
             'deskripsi' => 'required|string|max:255',
-            'file' => 'nullable|file|mimes:pdf,png,jpeg|max:10240',
+            'file' => 'nullable|file|mimes:pdf,doc,docx,xls,xlsx|max:10240',
         ]);
 
         $path = null;

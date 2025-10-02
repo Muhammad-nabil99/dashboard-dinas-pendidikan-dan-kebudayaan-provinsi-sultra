@@ -3,6 +3,7 @@
 use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\ProdukHukumController;
 use App\Http\Controllers\LaporanKegiatanController;
+use App\Http\Controllers\PengumumanController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -14,7 +15,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
         return Inertia::render('dashboard');
     })->name('dashboard');
-    
+    // pengumuman
+    Route::get('/pengumuman',[PengumumanController::class,'index'])->name('pengumuman.index');
+    Route::get('/pengumuman/create',[PengumumanController::class,'create'])->name('pengumuman.create');
+    Route::post('/pengumuman',[PengumumanController::class,'store'])->name('pengumuman.store');
+    Route::get('/pengumuman/{pengumuman}/edit',[PengumumanController::class,'edit'])->name('pengumuman.edit');
+    Route::put('/pengumuman/{pengumuman}',[PengumumanController::class,'update'])->name('pengumuman.update');
+    Route::delete('/pengumuman/{pengumuman}',[PengumumanController::class,'destroy'])->name('pengumuman.destroy');
+
     // agenda
     Route::get('/agenda',[AgendaController::class,'index'])->name('agenda.index');
     Route::get('/agenda/create',[AgendaController::class,'create'])->name('agenda.create');
