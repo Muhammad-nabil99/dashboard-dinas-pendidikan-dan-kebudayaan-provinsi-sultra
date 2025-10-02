@@ -10,7 +10,7 @@ import { Head, useForm } from '@inertiajs/react';
 import { CircleAlert, Plus, Save, SquarePen, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 
-const breadcrumbs: BreadcrumbItem[] = [{ title: 'Edit Berita', href: '/berita/edit' }];
+const breadcrumbs: BreadcrumbItem[] = [{ title: 'Ubah Berita', href: '/berita/edit' }];
 
 interface MediaItem {
   file: string;
@@ -35,20 +35,20 @@ interface Props {
 
 export default function Edit({ berita }: Props) {
   const { data, setData, post, errors } = useForm({
-  judul: berita.judul || '',
-  deskripsi: berita.deskripsi || '',
-  cover_image: null as File | null,
-  files: [] as File[],            // untuk foto baru
-  replace_files: [] as { index: number; file: File }[], // untuk foto yang diubah
-  video_urls: (berita.medias?.file || [])
-    .filter((m) => m.type === 'video' && m.file.startsWith('http'))
-    .map((m) => m.file),
-  category: berita.category || '',
-  instansi: berita.instansi || '',
-  lokasi: berita.lokasi || '',
-  deleted_files: [] as string[],
-  _method: 'PUT',
-});
+    judul: berita.judul || '',
+    deskripsi: berita.deskripsi || '',
+    cover_image: null as File | null,
+    files: [] as File[],            // untuk foto baru
+    replace_files: [] as { index: number; file: File }[], // untuk foto yang diubah
+    video_urls: (berita.medias?.file || [])
+      .filter((m) => m.type === 'video' && m.file.startsWith('http'))
+      .map((m) => m.file),
+    category: berita.category || '',
+    instansi: berita.instansi || '',
+    lokasi: berita.lokasi || '',
+    deleted_files: [] as string[],
+    _method: 'PUT',
+  });
 
 
   const [previewCoverUrl, setPreviewCoverUrl] = useState<string | null>(

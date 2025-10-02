@@ -118,20 +118,17 @@ class BeritaController extends Controller
         // Hapus media yang dipilih user
         if ($request->deleted_files) {
             foreach ($request->deleted_files as $delFile) {
-                // hapus fisik file jika lokal
                 if (!preg_match('/^https?:\/\//', $delFile) && Storage::disk('public')->exists($delFile)) {
                     Storage::disk('public')->delete($delFile);
                 }
-                // hapus dari array
                 $mediaFiles = array_filter($mediaFiles, function ($m) use ($delFile) {
                     return $m['file'] !== $delFile;
                 });
             }
-            // reset index array
             $mediaFiles = array_values($mediaFiles);
         }
 
-        // Tambah file baru
+        // Tambah file baru (foto/video upload)
         if ($request->hasFile('files')) {
             foreach ($request->file('files') as $file) {
                 $path = $file->store('berita/file', 'public');
@@ -140,7 +137,11 @@ class BeritaController extends Controller
             }
         }
 
-        // Tambah link video
+        $mediaFiles = array_filter($mediaFiles, function ($m) {
+            return $m['type'] !== 'video' || !preg_match('/^https?:\/\//', $m['file']);
+        });
+
+        // Masukkan ulang link video dari request
         if ($request->video_urls) {
             foreach ($request->video_urls as $url) {
                 $mediaFiles[] = ['file' => $url, 'type' => 'video'];
@@ -149,35 +150,10 @@ class BeritaController extends Controller
 
         // Simpan media
         if ($berita->medias) {
-            $berita->medias->update(['file' => $mediaFiles]);
+            $berita->medias->update(['file' => array_values($mediaFiles)]);
         } else {
-            $berita->medias()->create(['file' => $mediaFiles]);
+            $berita->medias()->create(['file' => array_values($mediaFiles)]);
         }
-
-        // Hapus media yang dipilih user
-        if ($request->deleted_files) {
-            foreach ($request->deleted_files as $delFile) {
-                // hapus fisik file jika lokal
-                if (!preg_match('/^https?:\/\//', $delFile) && Storage::disk('public')->exists($delFile)) {
-                    Storage::disk('public')->delete($delFile);
-                }
-                // hapus dari array
-                $mediaFiles = array_filter($mediaFiles, function ($m) use ($delFile) {
-                    return $m['file'] !== $delFile;
-                });
-            }
-            $mediaFiles = array_values($mediaFiles);
-        }
-
-        // Tambah file baru
-        if ($request->hasFile('files')) {
-            foreach ($request->file('files') as $file) {
-                $path = $file->store('berita/file', 'public');
-                $type = in_array($file->extension(), ['mp4','mov','avi']) ? 'video' : 'foto';
-                $mediaFiles[] = ['file' => $path, 'type' => $type];
-            }
-        }
-
 
         // Update berita utama
         $berita->update([
@@ -190,6 +166,7 @@ class BeritaController extends Controller
 
         return redirect()->route('berita.index')->with('message', 'Berita berhasil diperbarui');
     }
+
 
 
 

@@ -1,11 +1,21 @@
-import React from "react";
+import React, { useMemo, useState } from "react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuGroup,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
 import AppLayout from "@/layouts/app-layout";
 import { type BreadcrumbItem } from "@/types";
 import { Head, Link, useForm, usePage } from "@inertiajs/react";
 import {
     CalendarDays,
+    ListFilterPlus,
+    MapPin,
     Megaphone,
     Plus,
     SquarePen,
@@ -31,6 +41,7 @@ interface Berita {
     instansi: string;
     lokasi: string;
     created_at: string;
+    updated_at: string;
 }
 
 interface CustomPageProps {
@@ -45,6 +56,13 @@ export default function Index() {
     const { berita, flash } = usePage<PageProps>().props;
     const { processing, delete: destroy } = useForm();
 
+    // 🔹 State untuk search dan filter
+    const [sortOrder, setSortOrder] = useState<"terbaru" | "terlama">("terbaru");
+    const [searchQuery, setSearchQuery] = useState("");
+    const [instansiFilter, setInstansiFilter] = useState<"all" | "SMA" | "SLB" | "SMK">("all");
+    const [categoryFilter] = useState<"all" | "foto" | "video">("all");
+    // const [categoryFilter, setCategoryFilter] = useState<"all" | "foto" | "video">("all");
+    
     const handleDelete = (id: number, judul: string) => {
         if (!confirm(`Apakah anda yakin ingin menghapus "${judul}"?`)) return;
         destroy(route("berita.destroy", id));
@@ -61,18 +79,138 @@ export default function Index() {
         return `/storage/berita/cover/${cover}`;
     };
 
+  // 🔹 Filtering + Sorting + Search
+    const filteredBerita = useMemo(() => {
+        return [...berita]
+        .filter((item) => {
+            if (!searchQuery) return true;
+
+            const q = searchQuery.toLowerCase();
+
+            const createdAt = new Date(item.created_at).toLocaleDateString("id-ID", {
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+            }).toLowerCase();
+
+            const updatedAt = new Date(item.updated_at).toLocaleDateString("id-ID", {
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+            }).toLowerCase();
+
+            return (
+                item.judul.toLowerCase().includes(q) ||
+                item.deskripsi.toLowerCase().includes(q) ||
+                item.lokasi?.toLowerCase().includes(q) ||
+                createdAt.includes(q) ||
+                updatedAt.includes(q)
+            );
+        })
+
+        .filter((item) =>
+            instansiFilter === "all"
+            ? true
+            : item.instansi?.trim().toLowerCase().includes(instansiFilter.toLowerCase())
+        )
+        .filter((item) =>
+            categoryFilter === "all" ? true : item.category?.toLowerCase() === categoryFilter
+        )
+        .sort((a, b) => {
+            const dateA = new Date(a.created_at).getTime();
+            const dateB = new Date(b.created_at).getTime();
+            return sortOrder === "terbaru" ? dateB - dateA : dateA - dateB;
+        });
+    }, [berita, sortOrder, searchQuery, instansiFilter, categoryFilter]);
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
         <Head title="Berita" />
 
-        {/* Header + Tambah */}
-        <div className="m-4 flex justify-between items-center flex-wrap gap-4">
+        {/* Header with filter */}
+        <div className="m-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
             <h1 className="text-2xl font-semibold">Daftar Berita</h1>
+            <div className="flex flex-col gap-2 md:flex-row md:items-center">
+            {/* Search Bar */}
+            <Input
+                placeholder="Cari judul berita..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full md:w-64"
+            />
+
             <Link href={route("berita.create")}>
-            <Button>
+                <Button>
                 <Plus /> Tambah
-            </Button>
+                </Button>
             </Link>
+
+            {/* Sort Filter */}
+            <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                <Button variant="outline">
+                    <ListFilterPlus /> {sortOrder}
+                </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-40 capitalize">
+                <DropdownMenuGroup>
+                    <DropdownMenuItem onClick={() => setSortOrder("terbaru")}>
+                    Terbaru
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setSortOrder("terlama")}>
+                    Terlama
+                    </DropdownMenuItem>
+                </DropdownMenuGroup>
+                </DropdownMenuContent>
+            </DropdownMenu>
+
+            {/* Instansi Filter */}
+            <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                <Button variant="outline">
+                    <ListFilterPlus /> {instansiFilter || "Instansi"}
+                </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-40 capitalize">
+                <DropdownMenuGroup>
+                    <DropdownMenuItem onClick={() => setInstansiFilter("all")}>
+                    Semua Instansi
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setInstansiFilter("SMA")}>
+                    SMA
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setInstansiFilter("SLB")}>
+                    SLB
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setInstansiFilter("SMK")}>
+                    SMK
+                    </DropdownMenuItem>
+                </DropdownMenuGroup>
+                </DropdownMenuContent>
+            </DropdownMenu>
+
+            {/* Category Filter */}
+            {/* <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                <Button variant="outline">
+                    <ListFilterPlus /> {categoryFilter}
+                </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-40 capitalize">
+                <DropdownMenuGroup>
+                    <DropdownMenuItem onClick={() => setCategoryFilter("all")}>
+                    Semua
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setCategoryFilter("foto")}>
+                    Foto
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setCategoryFilter("video")}>
+                    Video
+                    </DropdownMenuItem>
+                </DropdownMenuGroup>
+                </DropdownMenuContent>
+            </DropdownMenu> */}
+            </div>
         </div>
 
         {/* Flash Message */}
@@ -88,9 +226,9 @@ export default function Index() {
 
         {/* Grid Card */}
         <div className="m-4">
-            {berita && berita.length > 0 ? (
+            {filteredBerita && filteredBerita.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {berita.map((item) => (
+                {filteredBerita.map((item) => (
                 <article
                     key={item.id}
                     className="bg-white rounded-2xl shadow hover:shadow-lg transition flex flex-col overflow-hidden"
@@ -112,20 +250,22 @@ export default function Index() {
                         {item.deskripsi}
                     </p>
 
+                    <div className="flex justify-between">
                     <p className="text-gray-500 text-sm flex items-center gap-2 mb-2">
                         <CalendarDays className="w-4 h-4" />
-                        {new Date(item.created_at).toLocaleDateString("id-ID", {
+                        {new Date(item.updated_at ?? item.created_at).toLocaleDateString("id-ID", {
                             day: "numeric",
                             month: "long",
                             year: "numeric",
                         })}
                     </p>
+                        <p className="text-gray-600 text-sm mb-2 line-clamp-3 flex items-center">
+                        <MapPin className="w-4 h-4 m-1"/>{item.lokasi}
+                        </p>
+                        </div>
                     {/* Aksi */}
                     <div className="mt-auto flex gap-2">
-                        <Link
-                        href={route("berita.edit", item.id)}
-                        className="flex-1"
-                        >
+                        <Link href={route("berita.edit", item.id)} className="flex-1">
                         <Button className="bg-blue-950 hover:bg-blue-900 w-full">
                             <SquarePen /> Ubah
                         </Button>
@@ -151,4 +291,3 @@ export default function Index() {
         </AppLayout>
     );
 }
-    
